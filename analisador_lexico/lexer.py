@@ -1,6 +1,6 @@
 import re
-from token import Token
-from tokentype import tokenType
+from .token import Token
+from .tokentype import tokenType
 
 
 #Lista de regras do lexer usando regex
