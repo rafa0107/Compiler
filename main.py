@@ -5,7 +5,7 @@ from analisador_lexico.lexer import Scanner
 from analisador_sintatico.parser import Parser
 
 # --- CÓDIGO DE TESTE ---
-# Código em string que simula um programa na linguagem fonte (contendo declarações, if/else, loops e retornos)
+
 codigo_teste = """
 int x = 10;
 float y = 3.14;
@@ -43,36 +43,36 @@ tokens_validos = []
 # Laço para extrair sequencialmente todos os tokens do código fonte
 while True:
     token = scanner.next_token()
-    if token is None:  # Se retornar None, significa que chegamos ao Fim do Arquivo (EOF)
+    if token is None:  # Se retornar None, é (EOF)
         break
     
     # Se o lexer encontrar um caractere inválido (ex: @, $, etc), ele gera um token do tipo "ERRO"
     if token.type != "ERRO":
-        tokens_validos.append(token) # Apenas tokens legítimos são guardados para a próxima fase
+        tokens_validos.append(token)
 
 # --- BARREIRA DE ERRO LÉXICO ---
 # Verifica se a lista de erros do scanner possui algum registro.
 if len(scanner.errors) > 0:
     print("\n[FALHA] Erro Léxico encontrado:")
-    # Percorre e exibe os detalhes de cada caractere ilegal encontrado com sua respectiva posição
+    # Percorre e exibe os detalhes de cada caractere com erro encontrado e sua respectiva posição
     for error in scanner.errors:
         print(f"  - {error['message']} na linha {error['line']}, coluna {error['column']}")
     
-    # CRUCIAL: Interrompe a execução do compilador imediatamente.
-    # Se a estrutura de tokens estiver corrompida, o analisador sintático quebraria ou geraria falsos erros.
+    # Interrompe a execução do compilador imediatamente.
+    # Se tiver erros, nem chama o sintático.
     exit(1) 
 
 
 # ==========================================
 # 2. ETAPA: ANALISADOR SINTÁTICO (PARSER)
 # ==========================================
-# Esse bloco SÓ será executado se o código passar 100% sem erros no Lexer
+# Esse bloco SÓ será executado se o código passar 100% sem erros no scanner
 print("\n[SUCESSO] Análise Léxica concluída.")
 
-# Instancia o Parser, alimentando-o exclusivamente com a lista de tokens válidos filtrada anteriormente
+# Instancia o Parser, passando lista de tokens válidos filtrada anteriormente
 parser = Parser(tokens_validos)
 
-# Dispara o método principal do Parser, que inicia o processo de descida recursiva (parsing).
+# Chama o método principal do Parser, que inicia o processo de descida recursiva (parsing).
 # Ele agrupa os tokens em regras gramaticais e retorna a raiz da Árvore Sintática Abstrata (AST).
 ast = parser.parse()
 

@@ -8,7 +8,7 @@ class StatementsParser:
     """
 
     def statement(self):
-        """Hub direcionador que analisa o token atual e decide qual regra sintática aplicar."""
+        """Direcionador que analisa o token atual e decide qual regra sintática aplicar."""
         token = self.current_token()
         if token is None:
             return
