@@ -1,7 +1,7 @@
 # type: ignore
 
 class SyntaxError:
-    """Modela a estrutura de um erro sintático capturado durante o parsing."""
+    """Estrutura de um erro sintático capturado durante o parsing."""
     def __init__(self, message, line, column):
         self.message = message
         self.line = line
@@ -47,7 +47,7 @@ class BaseParser:
             if expected_value is None or token.value == expected_value:
                 self.advance()
                 return True
-
+        # Verifica se o token recebido do léxico é o mesmo do esperado de acordo com a gramática. Se não for, reporta o erro.
         expected = expected_value if expected_value else expected_type
         self.report_error(f"Esperado '{expected}', mas encontrou '{token.value}'", token)
         return False
@@ -56,7 +56,7 @@ class BaseParser:
         """Registra o erro com localização exata e aciona o modo de pânico (sincronização)."""
         if token:
             err = SyntaxError(message, token.line, token.column)
-        else:
+        else: # Para quando o token é None, indicando (EOF) ou quando a lista de tokens está vazia. Nesse caso, tenta usar o último token para obter a linha e coluna, ou define como 1 se não houver tokens.
             current = self.current_token()
             last_token = current if current else (self.tokens[-1] if self.tokens else None)
             line = last_token.line if last_token else 1

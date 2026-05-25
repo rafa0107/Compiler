@@ -12,7 +12,7 @@ class ASTNode:
         self.node_type = node_type
         # Armazena o valor textual do token correspondente (ex: "if", "x", "10")
         self.value = value
-        # Lista encadeada que guarda os subcomponentes desta instrução
+        # Lista que guarda os subcomponentes desta instrução
         self.children = []
 
     def add(self, child):

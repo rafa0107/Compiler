@@ -11,7 +11,7 @@ int x = 10;
 float y = 3.14;
 char c = 'a';
 
-x = x + 5;
+x =  x  + 5;
 
 if (x > 10){
     x = x * 2;
@@ -33,9 +33,9 @@ return x;
 print("========== Iniciando Compilação ==========")
 
 
-# ==========================================
+
 # 1. ETAPA: ANALISADOR LÉXICO (SCANNER)
-# ==========================================
+
 # Instancia o Scanner passando o código bruto. Ele varrerá o texto caractere por caractere.
 scanner = Scanner(codigo_teste)
 tokens_validos = []
@@ -63,9 +63,9 @@ if len(scanner.errors) > 0:
     exit(1) 
 
 
-# ==========================================
+
 # 2. ETAPA: ANALISADOR SINTÁTICO (PARSER)
-# ==========================================
+
 # Esse bloco SÓ será executado se o código passar 100% sem erros no scanner
 print("\n[SUCESSO] Análise Léxica concluída.")
 
