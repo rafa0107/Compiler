@@ -29,9 +29,13 @@ class Parser(
 
         # Varre sequencialmente todo o fluxo de tokens até o esgotamento do arquivo
         while self.current_token() is not None:
+            token_antes = self.current_idx
+
             stmt = self.statement()
             if stmt:
                 root.add(stmt)
-
-        # Retorna o topo da Árvore Sintática Abstrata (AST) completamente montada
+            # Força o avanço para evitar loop
+            if token_antes == self.current_idx:
+                self.advance()
+                
         return root

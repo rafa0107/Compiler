@@ -83,8 +83,9 @@ class ExpressionsParser:
         elif token.value == "(":
             self.advance()
             node = self.expression()
-            self.match("DELIMITADOR", ")")
-            return node
+            if not self.match("DELIMITADOR", ")"):
+                print("teste factor arrumado")
+                return node
 
         self.report_error(f"Fator inválido: {token.value}", token)
         return None

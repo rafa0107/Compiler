@@ -11,6 +11,8 @@ int x = 10;
 float y = 3.14;
 char c = 'a';
 
+int p,o = 1,2;
+
 x =  x  + 5;
 
 if (x > 10){
@@ -53,7 +55,7 @@ while True:
 # --- BARREIRA DE ERRO LÉXICO ---
 # Verifica se a lista de erros do scanner possui algum registro.
 if len(scanner.errors) > 0:
-    print("\n[FALHA] Erro Léxico encontrado:")
+    print("\n FALHA: Erro Léxico encontrado:")
     # Percorre e exibe os detalhes de cada caractere com erro encontrado e sua respectiva posição
     for error in scanner.errors:
         print(f"  - {error['message']} na linha {error['line']}, coluna {error['column']}")
@@ -67,7 +69,7 @@ if len(scanner.errors) > 0:
 # 2. ETAPA: ANALISADOR SINTÁTICO (PARSER)
 
 # Esse bloco SÓ será executado se o código passar 100% sem erros no scanner
-print("\n[SUCESSO] Análise Léxica concluída.")
+print("\n SUCESSO: Análise Léxica concluída.")
 
 # Instancia o Parser, passando lista de tokens válidos filtrada anteriormente
 parser = Parser(tokens_validos)
@@ -80,7 +82,7 @@ ast = parser.parse()
 # --- VALIDAÇÃO E EXIBIÇÃO DOS RESULTADOS ---
 # Verifica se o parser conseguiu processar toda a estrutura gramatical sem violar nenhuma regra da linguagem
 if len(parser.errors) == 0:
-    print("\n[SUCESSO] Análise Sintática concluída sem erros!")
+    print("\n SUCESSO: Análise Sintática concluída sem erros!")
     print("\n===== AST GERADA =====\n")
     # Imprime a árvore na tela. Como sobrescrevemos o método __repr__ em ASTNode,
     # ela será exibida com recuos (indentações) que mostram visualmente a hierarquia do programa.
@@ -88,7 +90,7 @@ if len(parser.errors) == 0:
 
 else:
     # Se a gramática estiver errada (ex: faltar parênteses, ponto e vírgula, chaves descasadas), entra aqui
-    print(f"\n[FALHA] Foram encontrados {len(parser.errors)} erros sintáticos:")
+    print(f"\n FALHA: Foram encontrados {len(parser.errors)} erros sintáticos:")
 
     # Lista todos os erros de sintaxe capturados pelo mecanismo de recuperação em modo pânico do parser
     for erro in parser.errors:

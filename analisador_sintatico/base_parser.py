@@ -40,16 +40,24 @@ class BaseParser:
         """
         token = self.current_token()
         if token is None:
-            self.report_error(f"Esperado '{expected_value if expected_value else expected_type}', mas o arquivo terminou.")
+            expected = expected_value if expected_value else expected_type
+            self.report_error(f"Esperado '{expected}', mas o arquivo terminou.")
             return False
 
         if token.type == expected_type:
             if expected_value is None or token.value == expected_value:
                 self.advance()
                 return True
+            
         # Verifica se o token recebido do léxico é o mesmo do esperado de acordo com a gramática. Se não for, reporta o erro.
         expected = expected_value if expected_value else expected_type
         self.report_error(f"Esperado '{expected}', mas encontrou '{token.value}'", token)
+
+        if expected_value in [';', '}', ')']:
+            # Não avança, deixa o próximo método ler esse token no contexto certo dele
+            return False
+        
+        self.advance()  # Avança para evitar loops infinitos em tokens problemáticos
         return False
 
     def report_error(self, message, token=None):
@@ -64,31 +72,36 @@ class BaseParser:
             err = SyntaxError(message, line, column)
         
         self.errors.append(err)
-        self.synchronize()
 
     def synchronize(self):
         """
         Aplica a estratégia de 'recuperação em modo pânico'. Descarta tokens problemáticos 
-        até encontrar um ponto de sincronização seguro (; ou palavras-chave de escopo),
-        evitando o travamento do parser e cascatas de falsos erros.
+        até encontrar um ponto de sincronização seguro, evitando cascatas de falsos erros.
         """
         while self.current_token() is not None:
             token = self.current_token()
 
-            # Evita consumir delimitações que fecham blocos sintáticos superiores
-            if token.value in ['}', ')']:
-                return
-
-            # Se encontrar o fim da instrução, consome o ';' e encerra a recuperação
+            # Se encontrar o fim de uma instrução simples, consome o ';' e encerra o pânico.
             if token.value == ';':
                 self.advance()
                 return
 
-            # Se encontrar o início evidente de uma nova estrutura, interrompe o descarte
+            # Se encontrar o fecho de um bloco '}', consome-o. Isso ajuda a limpar 
+            # os resíduos de blocos órfãos gerados por comandos (como if/while) que quebraram.
+            if token.value == '}':
+                self.advance()
+                return
+
+            # Se encontrar o início evidente de uma NOVA estrutura independente no escopo global,
+            # interrompe o descarte SEM consumir o token, para que o parser principal trate-o.
             if (
                 token.type == "PALAVRA_RESERVADA"
-                and token.value in ['int', 'float', 'char', 'if', 'while', 'for', 'return']
+                and token.value in ['int', 'float', 'char', 'void', 'if', 'while', 'for', 'return']
             ):
+                return
+
+            # Evita pular delimitadores de abertura para não quebrar a contagem de blocos futuros
+            if token.value in ['{', '(']:
                 return
 
             self.advance()
