@@ -17,25 +17,20 @@ class Parser(
     """
 
     def __init__(self, tokens):
-        # Inicializa o estado compartilhado da classe base passando os tokens lexados
         super().__init__(tokens)
 
     def parse(self):
-        """
-        Ponto de partida do processo de análise sintática (Parsing).
-        Cria a raiz máxima do programa e lê em loop todas as instruções adjacentes.
-        """
+        """Ponto de partida do processo de análise sintática."""
         root = ASTNode("PROGRAMA")
 
-        # Varre sequencialmente todo o fluxo de tokens até o esgotamento do arquivo
         while self.current_token() is not None:
             token_antes = self.current_idx
 
             stmt = self.statement()
             if stmt:
                 root.add(stmt)
-            # Força o avanço para evitar loop
-            if token_antes == self.current_idx:
-                self.advance()
-                
+            else:
+                if token_antes == self.current_idx:
+                    self.advance()
+                    
         return root
