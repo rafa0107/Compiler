@@ -31,11 +31,11 @@ tokenSpecs = [
 
 class Scanner:
     def __init__(self, input_text):
-        self.input = input_text # código fonte completo
-        self.cursor = 0 # posição atual no texto
-        self.line = 1 # linha atual
-        self.column = 1 # coluna atual
-        self.errors = [] # lista de erros encontrados
+        self.input = input_text 
+        self.cursor = 0 
+        self.line = 1 
+        self.column = 1 
+        self.errors = [] 
 
     def next_token(self):
         # verifica se chegou ao fim do input

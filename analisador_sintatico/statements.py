@@ -3,7 +3,7 @@ from .ast import ASTNode
 
 class StatementsParser:
     """
-    Sub-parser focado no roteamento e estruturação de comandos (Instruções).
+    Sub-parser focado na derivação das Instruções.
     Verifica loops, condicionais, declarações e atribuições de escopo.
     """
 
@@ -76,7 +76,7 @@ class StatementsParser:
                 self.synchronize() 
                 return None
 
-        node = ASTNode("DECLARAÇÃO_MULTIPLA", type_token.value)
+        node = ASTNode("DECLARAÇÃO", type_token.value)
         
         vars_node = ASTNode("VARIÁVEIS")
         for var in identifiers:
@@ -87,7 +87,7 @@ class StatementsParser:
         if next_token and next_token.value == "=":
             self.advance() 
             
-            expr_node = ASTNode("VALORES_INICIAIS")
+            expr_node = ASTNode("VALOR")
             
             first_expr = self.expression()
             if first_expr:

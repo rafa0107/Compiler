@@ -24,10 +24,6 @@ while (x < 100){
     x = x + 10;
 }
 
-for (int i = 0; i < 5; i = i + 1){
-    y = y + 1.5;
-}
-
 return x;
 """
 
@@ -35,7 +31,7 @@ print("========== Iniciando Compilação ==========")
 
 
 
-# 1. ETAPA: ANALISADOR LÉXICO (SCANNER)
+# 1. ETAPA: ANALISADOR LÉXICO
 scanner = Scanner(codigo_teste)
 tokens_validos = []
 
@@ -44,7 +40,6 @@ while True:
     if token is None: 
         break
     
-    # Se o lexer encontrar um caractere inválido (ex: @, $, etc), ele gera um token do tipo "ERRO"
     if token.type != "ERRO":
         tokens_validos.append(token)
 
@@ -56,9 +51,11 @@ if len(scanner.errors) > 0:
         print(f"  - {error['message']} na linha {error['line']}, coluna {error['column']}")
     exit(1) 
 
+# for t in tokens_validos:
+#     print(t)
 
 
-# 2. ETAPA: ANALISADOR SINTÁTICO (PARSER)
+# 2. ETAPA: ANALISADOR SINTÁTICO
 
 print("\n SUCESSO: Análise Léxica concluída.")
 parser = Parser(tokens_validos)
@@ -66,7 +63,7 @@ parser = Parser(tokens_validos)
 ast = parser.parse() #retona raiz da arvore sintática
 
 
-# --- VALIDAÇÃO E EXIBIÇÃO DOS RESULTADOS ---
+# --- IMPRESSAO NO TERMINAL ---
 if len(parser.errors) == 0:
     print("\n SUCESSO: Análise Sintática concluída sem erros!")
     print("\n===== AST GERADA =====\n")

@@ -11,16 +11,13 @@ class Parser(
     StatementsParser
 ):
     """
-    Orquestrador Central do Compilador (Parser).
-    Utiliza herança múltipla para unificar os submódulos de infraestrutura,
-    expressões e instruções em uma única máquina de análise sintática.
+    Ponto de inicio do Parser na análise sintática.
     """
 
     def __init__(self, tokens):
         super().__init__(tokens)
 
     def parse(self):
-        """Ponto de partida do processo de análise sintática."""
         root = ASTNode("PROGRAMA")
 
         while self.current_token() is not None:

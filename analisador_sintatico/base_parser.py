@@ -13,8 +13,7 @@ class SyntaxError:
 
 class BaseParser:
     """
-    Classe para o gerenciamento de ponteiros de tokens,
-    verificação de padrões de correspondência (match) e recuperação de erros.
+    Classe para as funções gerais do parser.
     """
     def __init__(self, tokens):
         self.tokens = tokens       
@@ -72,8 +71,7 @@ class BaseParser:
 
     def synchronize(self):
         """
-        Aplica a estratégia de 'recuperação em modo pânico'. Descarta tokens problemáticos 
-        até encontrar um ponto de sincronização seguro, evitando cascatas de falsos erros.
+        Aplica a estratégia de 'recuperação em modo pânico'. .
         """
         while self.current_token() is not None:
             token = self.current_token()

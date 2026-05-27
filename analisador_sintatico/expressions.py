@@ -36,7 +36,7 @@ class ExpressionsParser:
             node = ASTNode("EXPRESSÃO ARITMÉTICA", op.value)
             node.add(left)
             node.add(right)
-            left = node # O nó atual vira o filho esquerdo do próximo operador do loop
+            left = node
         return left
 
     def term(self):
@@ -55,10 +55,6 @@ class ExpressionsParser:
         return left
 
     def factor(self):
-        """
-        Para resolver literais (números/strings), identificadores (variáveis) ou
-        redefinir a prioridade recursivamente caso encontre parênteses '()'.
-        """
         token = self.current_token()
         if token is None:
             self.report_error("Expressão incompleta")
